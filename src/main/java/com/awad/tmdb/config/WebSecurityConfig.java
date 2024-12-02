@@ -5,6 +5,7 @@ import com.awad.tmdb.component.auth.JwtFilterPerRequest;
 import com.awad.tmdb.component.auth.oauth2.HttpCookieOAuth2AuthorizationRequestRepository;
 import com.awad.tmdb.component.auth.oauth2.OAuth2AuthenticationFailureHandler;
 import com.awad.tmdb.component.auth.oauth2.OAuth2AuthenticationSuccessHandler;
+import com.awad.tmdb.component.auth.usernamepassword.CustomRequestCache;
 import com.awad.tmdb.component.auth.usernamepassword.UsernamePasswordAuhenticationFailureHandler;
 import com.awad.tmdb.component.auth.usernamepassword.UsernamePasswordAuhenticationSuccessHandler;
 import com.awad.tmdb.constant.AppPropertiesConfig;
@@ -26,12 +27,11 @@ import org.springframework.security.config.annotation.web.configurers.oauth2.cli
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity // Allow config security for each request
-@EnableMethodSecurity // Allow authorize basa-role for each method
+@EnableMethodSecurity // Allow authorize based-role for each method
 @RequiredArgsConstructor
 public class WebSecurityConfig {
     private final AppPropertiesConfig configProperties;
@@ -76,7 +76,7 @@ public class WebSecurityConfig {
                 .sessionManagement(this.statelessSessionCustomizer())
                 .oauth2Login(this.oauth2LoginCustomizer())
                 .formLogin(login -> login.disable()) // Disable default form login
-                .requestCache(cache -> cache.requestCache(this.requestCache())) // Custom request cache
+                .requestCache(cache -> cache.requestCache(new CustomRequestCache())) // Custom request cache
                 .exceptionHandling(exception ->
                         exception.authenticationEntryPoint(new CustomAuthenticationEntryPoint()))
                 .build();
@@ -84,12 +84,6 @@ public class WebSecurityConfig {
 
     private Customizer<SessionManagementConfigurer<HttpSecurity>> statelessSessionCustomizer() {
         return session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-    }
-
-    private HttpSessionRequestCache requestCache() {
-        var requestCache = new HttpSessionRequestCache();
-        requestCache.setMatchingRequestParameterName(null);
-        return requestCache;
     }
 
     private Customizer<OAuth2LoginConfigurer<HttpSecurity>> oauth2LoginCustomizer() {

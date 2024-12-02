@@ -31,7 +31,6 @@ import java.util.List;
 public class UsernamePasswordAuhenticationSuccessHandler extends AbstractAuthenticationTargetUrlRequestHandler
         implements AuthenticationSuccessHandler {
     private final JwtService jwtService;
-    private final AppPropertiesConfig properties;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
@@ -80,7 +79,7 @@ public class UsernamePasswordAuhenticationSuccessHandler extends AbstractAuthent
 
     private boolean isRedirectUriTheSameAllowedOrigins(String uri) {
         URI clientRedirectUri = URI.create(uri);
-        var redirectUris = List.of("http://localhost:3000", "http://localhost:3001");
+        var redirectUris = List.of("http://localhost:3000", "http://localhost:3001", "http://localhost:8080");
         return redirectUris
                 .stream()
                 .anyMatch(authorizedRedirectUri -> {

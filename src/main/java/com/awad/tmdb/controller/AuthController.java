@@ -43,23 +43,6 @@ public class AuthController {
         throw new Exception("Failed to get login page!");
     }
 
-    @PostMapping("/login")
-    public AppResponseEntity<?> handleLoginRequest(
-            UserLoginRequest loginRequest,
-            HttpServletResponse response) throws IOException {
-        AuthenticatedToken authToken = authService.handleLoginRequest(loginRequest);
-        String domain = "localhost";
-        int accessTokenCookieMaxAge = 3600;
-        Cookie accessTokenCookie = CookieUtils.newCookieWithHttpOnly(OAuth2ParameterNames.ACCESS_TOKEN,
-                authToken.getAccessToken(), domain, accessTokenCookieMaxAge);
-        int refreshTokenCookieMaxAge = 30 * 24 * 60 * 60;
-        Cookie refreshTokenCookie = CookieUtils.newCookie(OAuth2ParameterNames.REFRESH_TOKEN,
-                authToken.getRefreshToken(), domain, refreshTokenCookieMaxAge);
-        response.addCookie(accessTokenCookie);
-        response.addCookie(refreshTokenCookie);
-        return AppResponseEntity.from(HttpStatus.OK, "Login successfully");
-    }
-
     @PostMapping("/refresh-token")
     public AppResponseEntity<?> handleGeneratingNewTokenRequest(HttpServletRequest request,
                                                                 HttpServletResponse response) {
