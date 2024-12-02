@@ -1,4 +1,0 @@
-package com.awad.tmdb.dto.request.user;
-
-public record UserLoginRequest (){
-}
