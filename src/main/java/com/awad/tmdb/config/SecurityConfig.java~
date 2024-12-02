@@ -1,0 +1,2 @@
+package com.awad.tmdb.config;public class SecurityConfig {
+}

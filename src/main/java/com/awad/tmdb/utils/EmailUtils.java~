@@ -1,0 +1,4 @@
+package com.awad.tmdb.utils;
+
+public class EmailUtils {
+}
