@@ -1,4 +1,0 @@
-package com.awad.tmdb.service.user;
-
-public class UserServiceImpl implements UserService {
-}

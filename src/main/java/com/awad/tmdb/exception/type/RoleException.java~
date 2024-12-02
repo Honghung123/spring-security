@@ -1,4 +1,0 @@
-package com.awad.tmdb.exception.type;
-
-public enum RoleException {
-}

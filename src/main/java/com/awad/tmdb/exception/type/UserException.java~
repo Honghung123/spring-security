@@ -1,6 +1,0 @@
-package com.awad.tmdb.exception.type;
-
-import com.awad.tmdb.exception.ExceptionType;
-
-public enum UserException implements ExceptionType {
-}
