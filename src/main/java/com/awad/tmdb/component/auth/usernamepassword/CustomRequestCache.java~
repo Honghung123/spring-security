@@ -1,0 +1,27 @@
+package com.awad.tmdb.component.auth.usernamepassword;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
+import org.springframework.stereotype.Component;
+
+@Component
+public class CustomRequestCache extends HttpSessionRequestCache {
+
+    @Override
+    public void saveRequest(HttpServletRequest request, HttpServletResponse response) {
+        super.saveRequest(request, response);
+        String redirectUri = request.getParameter("redirect_uri");
+        if (redirectUri != null) {
+            request.getSession().setAttribute("redirect_uri", redirectUri);
+        }
+    }
+
+    public String getRedirectUri(HttpServletRequest request) {
+        return (String) request.getSession().getAttribute("redirect_uri");
+    }
+
+    public void removeRedirectUri(HttpServletRequest request) {
+        request.getSession().removeAttribute("redirect_uri");
+    }
+}

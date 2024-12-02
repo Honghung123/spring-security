@@ -1,0 +1,55 @@
+server:
+  port: ${SERVER_PORT:8080}
+spring:
+  application:
+    name: tmdb
+  datasource:
+    url: ${POSTGREDB_URL:jdbc:postgresql://localhost:5432}/${POSTGREDB_DBNAME:tmdb}
+    driverClassName: ${POSTGREDB_DRIVER_CLASS_NAME:org.postgresql.Driver}
+    username: ${POSTGREDB_USER:postgres}
+    password: ${POSTGREDB_PASSWORD:root}
+  jpa:
+    hibernate:
+      ddl-auto: create-drop # Specify what should happen to the database when the application starts
+    defer-datasource-initialization: true # Defer database initialization
+    properties:
+      hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
+  sql:
+    init:
+      mode: always
+  main:
+    banner-mode: off
+  output:
+    ansi:
+      enabled: ALWAYS
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 1002636870506-vr4qnv9ppqa38la9kbpoerk4p7antjmc.apps.googleusercontent.com
+            client-secret: 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
+            scope:
+              # See https://developers.google.com/identity/protocols/oauth2/scopes
+              - email
+              - profile
+
+app.config:
+  cors:
+    pathPattern: /**
+    allowedOrigins: http://localhost:3000, http://localhost:3001, http://localhost:8080
+    allowCredentials: true
+    allowedMethods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+    allowedHeaders: Authorization, Origin, Content-Type, Accept, Accept-Encoding, Accept-Language, Access-Control-Allow-Origin, Access-Control-Allow-Headers, Access-Control-Request-Method, X-Requested-With, X-Auth-Token, X-Xsrf-Token, Cache-Control, Id-Token
+    allowedPublicApis: /favicon.ico, /session/login, /public/**
+    exposedHeaders: X-Xsrf-Token
+    maxAge: 1800
+  
+  jwt:
+    secret: ${JWT_SECRET:04ca023b39512e46d0c2cf4b48d5aac61d34302994c87ed4eff225dcf3b0a218739f3897051a057f9b846a69ea2927a587044164b7bae5e1306219d50b588cb1}
+    expiration: 86400
+    tokenPrefix: Bearer
+    tokenType: JWT
+    accessTokenExpiration: 2
+    refreshTokenExpiration: 14
+    macAlgorithm: HS256
